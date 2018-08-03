@@ -41,7 +41,7 @@ return [
             'provider' => 'users',
         ],
 
-        'api' => [
+        'ApiSeeder' => [
             'driver' => 'token',
             'provider' => 'users',
         ],

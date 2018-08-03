@@ -14,9 +14,8 @@ use Illuminate\Http\Request;
 */
 
 Route::group(['prefix' => 'v1'], function () {
-    Route::get('product/{id}', 'ProductController@view');
-    Route::post('product', 'ProductController@store');
+    Route::post('product', 'ProductController@store')->name('product.store');
 
-    Route::get('order/{id}', 'OrderController@view');
-    Route::post('order', 'OrderController@store');
+    Route::get('order', 'OrderController@view')->name('order.view');
+    Route::post('order', 'OrderController@store')->name('order.store');
 });

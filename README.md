@@ -1,3 +1,29 @@
+# Description
+
+API for creating products and orders with products
+
+Main files:
+
+* Controllers [Product](app/Http/Controllers/ProductController.php) and [Order](app/Http/Controllers/OrderController.php)
+* Models [Product](app/Models/Product.php) and [Order](app/Models/Order.php)
+* [Routing](routes/api.php)
+* [Migration](database/migrations/2018_08_01_171828_api.php)
+* [Seed](database/seeds/ApiSeeder.php) and [Seed Factory](database/factories/ProductFactory.php)
+
+# Requirements
+
+* PHP 7.2+ (and extensions needed to run Laravel 5.6 application)
+* Composer
+* DB supported by Eloquent
+
+# Installation
+
+1. Clone the project
+2. Run `composer install`
+3. Configure database or create `database.sqlite` file inside `database` folder (for Sqlite)
+4. Run `php artisan migrate` to create tables
+5. Run `php artisan db:seed` to fill database with sample data
+
 # Task:
 
 Create a tiny RESTful web service with the following business requirements:
