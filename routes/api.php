@@ -17,5 +17,8 @@ Route::group(['prefix' => 'v1'], function () {
     Route::post('product', 'ProductController@store')->name('product.store');
 
     Route::get('order', 'OrderController@view')->name('order.view');
-    Route::post('order', 'OrderController@store')->name('order.store');
+
+    Route::post('order', 'OrderController@store')
+        ->middleware('throttle:10,1')
+        ->name('order.store');
 });

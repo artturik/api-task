@@ -19,6 +19,6 @@ class CountryThrottleTransformer implements TransformerInterface
      */
     public function transform($data, int $limit = 10, int $time = 60)
     {
-        return new Data((string) geoip($data->getClientIp())->iso_code, '', (int) $limit, (int) $time);
+        return new Data((string) geoip($data->getClientIp())->iso_code, (string) $data->path(), (int) $limit, (int) $time);
     }
 }
