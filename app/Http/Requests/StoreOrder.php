@@ -2,7 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Models\Product;
+use Illuminate\Validation\Validator;
 
 class StoreOrder extends FormRequest
 {
@@ -13,7 +14,7 @@ class StoreOrder extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +25,36 @@ class StoreOrder extends FormRequest
     public function rules()
     {
         return [
-            //
+            'products.*.id' => 'required|exists:products',
+            'products.*.count' => 'required|integer|min:1'
         ];
+    }
+
+    /**
+     * Configure the validator instance.
+     *
+     * @return void
+     */
+    public function withValidator(Validator $validator)
+    {
+        $validator->after(function (Validator $validator) {
+            if ($validator->errors()->isEmpty() && !$this->validateTotalPrice()) {
+                $validator->errors()->add('products', 'Total order price is too small');
+            }
+        });
+    }
+
+    protected function validateTotalPrice(int $minPrice = 10) : bool
+    {
+        $total = 0;
+        $products = $this->validated();
+
+        foreach($products['products'] as $product){
+            $total += Product::find($product['id'], ['price'])->price * $product['count'];
+            if($total >= $minPrice){
+                return true;
+            }
+        }
+        return false;
     }
 }

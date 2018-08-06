@@ -2,11 +2,11 @@
 
 namespace App\Repositories;
 
+use App\Presenters\OrderPresenter;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\OrderRepository;
-use App\Entities\Order;
-use App\Validators\OrderValidator;
+use App\Models\Order;
 
 /**
  * Class OrderRepositoryEloquent.
@@ -33,6 +33,21 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
     public function boot()
     {
         $this->pushCriteria(app(RequestCriteria::class));
+    }
+
+    public function presenter()
+    {
+        return OrderPresenter::class;
+    }
+
+    public function filterOrdersWithProductType($type){
+        $this->scopeQuery(function($query) use ($type) {
+            return $query
+                ->select('orders.*')
+                ->join('order_product', 'orders.id', '=', 'order_product.order_id')
+                ->join('products', 'order_product.product_id', '=', 'products.id')
+                ->where('products.type', $type);
+        });
     }
     
 }

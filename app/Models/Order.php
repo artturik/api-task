@@ -19,6 +19,10 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
 
+    public $fillable = [
+        '[products]'
+    ];
+
     protected $dates = [
         'created_at',
         'updated_at',
@@ -26,5 +30,16 @@ class Order extends Model
 
     public function products(){
         return $this->belongsToMany(Product::class);
+    }
+
+    public function total() : float
+    {
+        $total = 0;
+        $products = $this->products;
+        foreach($products as $product){
+            $total += $product->price;
+        }
+
+        return (float) $total;
     }
 }
